@@ -35,4 +35,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:${{ github.ref_name }}

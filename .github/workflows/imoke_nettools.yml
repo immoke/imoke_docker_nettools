@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '../../docker/Dockerfile'
-      - 'imoke_nettools.yml'
+      - 'docker/Dockerfile'
+      - '.github/workflows/imoke_nettools.yml'
   workflow_dispatch: {}
 
 jobs:
@@ -28,8 +28,10 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ../../docker/Dockerfile
+          # 以 docker 目录作为构建上下文
+          context: ./docker
+          # Dockerfile 就在 context 根目录下，下面这一行可以写也可以省略
+          file: ./docker/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:latest

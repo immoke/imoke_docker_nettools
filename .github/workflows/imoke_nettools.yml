@@ -16,6 +16,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 从最后一次提交的 commit message 中取版本号
+      # 例如 commit message 是 "0.0.1" -> VERSION=0.0.1
+      - name: Get version from commit message
+        id: version
+        run: |
+          VERSION=$(git log -1 --pretty=%B | tr -d '\n' | sed 's/ //g')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Version from commit message: $VERSION"
+
+      # 简单校验：如果版本号为空就失败，提醒你提交信息要写成 0.0.1 这种
+      - name: Validate version
+        if: env.VERSION == ''
+        run: |
+          echo "ERROR: VERSION is empty. Please use a commit message like '0.0.1'."
+          exit 1
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -28,11 +44,10 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          # 以 docker 目录作为构建上下文
+          # 以 docker 目录作为构建上下文，里面有 Dockerfile 和 entrypoint.sh
           context: ./docker
-          # Dockerfile 就在 context 根目录下，下面这一行可以写也可以省略
           file: ./docker/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:${{ github.ref_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:${{ env.VERSION }}

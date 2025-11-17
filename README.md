@@ -5,5 +5,5 @@ docker run -it \
   -e ssh_password=Test1234 \
   -e ssh_port=2222 \
   -p 2222:2222 \
-  imoke/imoke_nettools:latest:latest
+  imoke/imoke_nettools:latest
 ```

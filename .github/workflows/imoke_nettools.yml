@@ -1,4 +1,4 @@
-name: Build and Push Net-Debug Image
+name: Build and Push imoke_nettools Image
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: ../../docker/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:latest

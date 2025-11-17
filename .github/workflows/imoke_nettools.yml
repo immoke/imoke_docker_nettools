@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Dockerfile'
-      - '.github/workflows/docker-net-debug.yml'
+      - '../../docker/Dockerfile'
+      - 'imoke_nettools.yml'
   workflow_dispatch: {}
 
 jobs:
@@ -32,5 +32,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/net-debug:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/net-debug:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/imoke_nettools:${{ github.sha }}
